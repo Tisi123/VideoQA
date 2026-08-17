@@ -12,3 +12,9 @@ epoch=10 step=93863 val_loss=0.7045 val_acc=0.4367 num_val=4996
 epoch=11 step=102396 val_loss=0.7604 val_acc=0.4454 num_val=4996
 epoch=12 step=110929 val_loss=0.8112 val_acc=0.4392 num_val=4996
 epoch=13 step=119462 val_loss=0.8152 val_acc=0.4398 num_val=4996
+epoch=14 step=127995 val_loss=0.8123 val_acc=0.4408 num_val=4996
+epoch=15 step=136528 val_loss=0.8379 val_acc=0.4520 num_val=4996
+epoch=16 step=145061 val_loss=0.8962 val_acc=0.4532 num_val=4996
+epoch=17 step=153594 val_loss=0.8905 val_acc=0.4524 num_val=4996
+epoch=18 step=162127 val_loss=0.9381 val_acc=0.4490 num_val=4996
+epoch=19 step=170660 val_loss=0.8873 val_acc=0.4438 num_val=4996
