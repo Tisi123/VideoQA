@@ -1,20 +1,20 @@
-epoch=0 step=8533 val_loss=0.5056 val_acc=0.4177 num_val=4996
-epoch=1 step=17066 val_loss=0.4680 val_acc=0.4105 num_val=4996
-epoch=2 step=25599 val_loss=0.4926 val_acc=0.4277 num_val=4996
-epoch=3 step=34132 val_loss=0.5520 val_acc=0.4426 num_val=4996
-epoch=4 step=42665 val_loss=0.5994 val_acc=0.4351 num_val=4996
-epoch=5 step=51198 val_loss=0.6510 val_acc=0.4390 num_val=4996
-epoch=6 step=59731 val_loss=0.5607 val_acc=0.4382 num_val=4996
-epoch=7 step=68264 val_loss=0.5741 val_acc=0.4550 num_val=4996
-epoch=8 step=76797 val_loss=0.5893 val_acc=0.4518 num_val=4996
-epoch=9 step=85330 val_loss=0.6467 val_acc=0.4532 num_val=4996
-epoch=10 step=93863 val_loss=0.6863 val_acc=0.4562 num_val=4996
-epoch=11 step=102396 val_loss=0.6904 val_acc=0.4484 num_val=4996
-epoch=12 step=110929 val_loss=0.7453 val_acc=0.4592 num_val=4996
-epoch=13 step=119462 val_loss=0.7487 val_acc=0.4642 num_val=4996
-epoch=14 step=127995 val_loss=0.7686 val_acc=0.4598 num_val=4996
-epoch=15 step=136528 val_loss=0.7971 val_acc=0.4648 num_val=4996
-epoch=16 step=145061 val_loss=0.7970 val_acc=0.4628 num_val=4996
-epoch=17 step=153594 val_loss=0.8239 val_acc=0.4660 num_val=4996
-epoch=18 step=162127 val_loss=0.8269 val_acc=0.4664 num_val=4996
-epoch=19 step=170660 val_loss=0.8246 val_acc=0.4644 num_val=4996
+epoch=0 step=8533 train_loss=0.7027 val_loss=0.5056 val_acc=0.4177 lr=1.00e-04 num_val=4996
+epoch=1 step=17066 train_loss=0.5311 val_loss=0.4680 val_acc=0.4105 lr=9.93e-05 num_val=4996
+epoch=2 step=25599 train_loss=0.4442 val_loss=0.4926 val_acc=0.4277 lr=9.73e-05 num_val=4996
+epoch=3 step=34132 train_loss=0.3780 val_loss=0.4845 val_acc=0.4359 lr=9.40e-05 num_val=4996
+epoch=4 step=42665 train_loss=0.3153 val_loss=0.5113 val_acc=0.4538 lr=8.96e-05 num_val=4996
+epoch=5 step=51198 train_loss=0.2704 val_loss=0.5121 val_acc=0.4498 lr=8.40e-05 num_val=4996
+epoch=6 step=59731 train_loss=0.2236 val_loss=0.5637 val_acc=0.4598 lr=7.76e-05 num_val=4996
+epoch=7 step=68264 train_loss=0.1946 val_loss=0.5860 val_acc=0.4626 lr=7.04e-05 num_val=4996
+epoch=8 step=76797 train_loss=0.1615 val_loss=0.6088 val_acc=0.4586 lr=6.26e-05 num_val=4996
+epoch=9 step=85330 train_loss=0.1424 val_loss=0.6565 val_acc=0.4680 lr=5.45e-05 num_val=4996
+epoch=10 step=93863 train_loss=0.1235 val_loss=0.6757 val_acc=0.4640 lr=4.64e-05 num_val=4996
+epoch=11 step=102396 train_loss=0.1033 val_loss=0.7058 val_acc=0.4570 lr=3.83e-05 num_val=4996
+epoch=12 step=110929 train_loss=0.0917 val_loss=0.7264 val_acc=0.4624 lr=3.06e-05 num_val=4996
+epoch=13 step=119462 train_loss=0.0835 val_loss=0.7656 val_acc=0.4702 lr=2.34e-05 num_val=4996
+epoch=14 step=127995 train_loss=0.0734 val_loss=0.8082 val_acc=0.4706 lr=1.69e-05 num_val=4996
+epoch=15 step=136528 train_loss=0.0673 val_loss=0.8390 val_acc=0.4700 lr=1.14e-05 num_val=4996
+epoch=16 step=145061 train_loss=0.0632 val_loss=0.8403 val_acc=0.4722 lr=6.94e-06 num_val=4996
+epoch=17 step=153594 train_loss=0.0584 val_loss=0.8570 val_acc=0.4718 lr=3.66e-06 num_val=4996
+epoch=18 step=162127 train_loss=0.0572 val_loss=0.8595 val_acc=0.4742 lr=1.66e-06 num_val=4996
+epoch=19 step=170660 train_loss=0.0566 val_loss=0.8630 val_acc=0.4722 lr=1.00e-06 num_val=4996

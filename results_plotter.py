@@ -26,8 +26,9 @@ import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("sevila", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Resuls_SeViLA\sevila_base"),
-    ("random_q", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Resuls_SeViLA\random_qformer_ft"),
+    ("drop_1", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_reg"),
+    ("drop_02", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_reg2"),
+    ("drop_15", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_reg3"),
 ]
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
@@ -40,7 +41,10 @@ def parse_train_log(path):
     Returns a list of dicts, one per epoch, in file order.
     """
     pattern = re.compile(
-        r"epoch=(\d+)\s+step=(\d+)\s+val_loss=([\d.]+)\s+val_acc=([\d.]+)\s+num_val=(\d+)"
+    r"epoch=(\d+)\s+step=(\d+)\s+train_loss=([\d.]+)\s+"
+    r"val_loss=([\d.]+)\s+val_acc=([\d.]+)"
+    r"(?:\s+lr=[\d.eE+-]+)?"     # optional, present in these runs
+    r"\s+num_val=(\d+)"
     )
     rows = []
     with open(path) as f:
@@ -48,10 +52,11 @@ def parse_train_log(path):
             m = pattern.search(line)
             if not m:
                 continue
-            epoch, step, val_loss, val_acc, num_val = m.groups()
+            epoch, step, train_loss, val_loss, val_acc, num_val = m.groups()
             rows.append({
                 "epoch": int(epoch),
                 "step": int(step),
+                "train_loss": float(train_loss),  
                 "val_loss": float(val_loss),
                 "val_acc": float(val_acc),
                 "num_val": int(num_val),
@@ -79,19 +84,21 @@ def plot_accuracy_and_loss(runs_data, out_path):
 
     for name, rows in runs_data.items():
         epochs = [r["epoch"] for r in rows]
-        acc = [r["val_acc"] for r in rows]
-        loss = [r["val_loss"] for r in rows]
-        ax_acc.plot(epochs, acc, marker="o", label=name)
-        ax_loss.plot(epochs, loss, marker="o", label=name)
+        train_loss = [r["train_loss"] for r in rows]
+        val_acc = [r["val_acc"] for r in rows]
+        val_loss = [r["val_loss"] for r in rows]
+        ax_acc.plot(epochs, val_acc, marker="o", label=name)
+        ax_loss.plot(epochs, val_loss , marker="o", label=name)
+        ax_loss.plot(epochs, train_loss, marker="o", label=f"{name} (train)", linestyle="--")
 
     ax_acc.set_ylabel("Validation accuracy")
     ax_acc.set_title("Validation accuracy vs. epoch")
     ax_acc.legend()
     ax_acc.grid(alpha=0.3)
 
-    ax_loss.set_ylabel("Validation loss")
+    ax_loss.set_ylabel("Validation - Train loss")
     ax_loss.set_xlabel("Epoch")
-    ax_loss.set_title("Validation loss vs. epoch")
+    ax_loss.set_title("Validation - Train loss vs. epoch")
     ax_loss.legend()
     ax_loss.grid(alpha=0.3)
 
@@ -164,7 +171,7 @@ def main():
             continue
         runs_data[name] = parse_train_log(log_path)
 
-    #plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss.png"))
+    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss2.png"))
 
     # --- Plot (b): per-category accuracy, one subplot per category, all runs overlaid ---
     runs_eval_data = {}
@@ -175,7 +182,7 @@ def main():
             continue
         runs_eval_data[name] = parse_evaluate(eval_path)
 
-    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_by_config.png"))
+    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_by_config2.png"))
 
 
 if __name__ == "__main__":
