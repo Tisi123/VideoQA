@@ -26,9 +26,8 @@ import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("drop_1", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_reg"),
-    ("drop_02", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_reg2"),
-    ("drop_15", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_reg3"),
+    ("adapter 1e-4", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_adapter"),
+    ("adapter 3e-4", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_adapter1"),
 ]
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
@@ -171,7 +170,7 @@ def main():
             continue
         runs_data[name] = parse_train_log(log_path)
 
-    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss2.png"))
+    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss_adapter.png"))
 
     # --- Plot (b): per-category accuracy, one subplot per category, all runs overlaid ---
     runs_eval_data = {}
@@ -182,7 +181,7 @@ def main():
             continue
         runs_eval_data[name] = parse_evaluate(eval_path)
 
-    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_by_config2.png"))
+    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_by_adapter.png"))
 
 
 if __name__ == "__main__":
