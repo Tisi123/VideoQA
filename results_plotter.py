@@ -26,8 +26,9 @@ import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("adapter 1e-4", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_adapter"),
-    ("adapter 3e-4", r"D:\Dokumente\UNI\MASTER\Masterarbeit\VideoQA\Results\videoqa_adapter_finetuning_1x1x4_adapter1"),
+    ("adapter - decoder", r"/share/data/students/andrej3/VideoQA/Results/videoqa_adapter_finetuning_1x1x4_frozen_encoder"),
+    ("lin adapter", r"/share/data/students/andrej3/VideoQA/Results/videoqa_adapter_finetuning_1x1x4_lin_adapter1"),
+    ("mlp", r"/share/data/students/andrej3/VideoQA/Results/videoqa_adapter_finetuning_1x1x4_mlp_adapter"),
 ]
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
@@ -157,7 +158,7 @@ def plot_categories_grid(runs_eval_data, out_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out_dir", default=".", help="where to save the PNGs")
+    parser.add_argument("--out_dir", default="VideoQA", help="where to save the PNGs")
     args = parser.parse_args()
     os.makedirs(args.out_dir, exist_ok=True)
 
