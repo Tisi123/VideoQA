@@ -26,9 +26,8 @@ import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("adapter - decoder", r"/share/data/students/andrej3/VideoQA/Results/videoqa_adapter_finetuning_1x1x4_frozen_encoder"),
-    ("lin adapter", r"/share/data/students/andrej3/VideoQA/Results/videoqa_adapter_finetuning_1x1x4_lin_adapter1"),
-    ("mlp", r"/share/data/students/andrej3/VideoQA/Results/videoqa_adapter_finetuning_1x1x4_mlp_adapter"),
+    ("lin-full-1e4", r"/share/data/students/andrej3/VideoQA/1x1x4_linear_full_model_1e4_01"),
+    ("mlp-full-1e4", r"/share/data/students/andrej3/VideoQA/1x1x4_mlp_full_model_1e4_01"),
 ]
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
@@ -171,7 +170,7 @@ def main():
             continue
         runs_data[name] = parse_train_log(log_path)
 
-    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss_adapter.png"))
+    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss_full_model_1e4.png"))
 
     # --- Plot (b): per-category accuracy, one subplot per category, all runs overlaid ---
     runs_eval_data = {}
@@ -182,7 +181,7 @@ def main():
             continue
         runs_eval_data[name] = parse_evaluate(eval_path)
 
-    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_by_adapter.png"))
+    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_full_model_1e4.png"))
 
 
 if __name__ == "__main__":
