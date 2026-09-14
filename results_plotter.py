@@ -26,8 +26,8 @@ import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("lin-full-1e4", r"/share/data/students/andrej3/VideoQA/1x1x4_linear_full_model_1e4_01"),
-    ("mlp-full-1e4", r"/share/data/students/andrej3/VideoQA/1x1x4_mlp_full_model_1e4_01"),
+    ("lin-encoder-1e4", r"/share/data/students/andrej3/VideoQA/Results/1x1x4_linear_frozen_decoder_1e4_01"),
+    ("mlp-encoder-1e4", r"/share/data/students/andrej3/VideoQA/Results/1x1x4_mlp_frozen_decoder_1e4_01"),
 ]
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
@@ -43,7 +43,6 @@ def parse_train_log(path):
     r"epoch=(\d+)\s+step=(\d+)\s+train_loss=([\d.]+)\s+"
     r"val_loss=([\d.]+)\s+val_acc=([\d.]+)"
     r"(?:\s+lr=[\d.eE+-]+)?"     # optional, present in these runs
-    r"\s+num_val=(\d+)"
     )
     rows = []
     with open(path) as f:
@@ -51,14 +50,13 @@ def parse_train_log(path):
             m = pattern.search(line)
             if not m:
                 continue
-            epoch, step, train_loss, val_loss, val_acc, num_val = m.groups()
+            epoch, step, train_loss, val_loss, val_acc = m.groups()
             rows.append({
                 "epoch": int(epoch),
                 "step": int(step),
                 "train_loss": float(train_loss),  
                 "val_loss": float(val_loss),
                 "val_acc": float(val_acc),
-                "num_val": int(num_val),
             })
     return rows
 
@@ -170,7 +168,7 @@ def main():
             continue
         runs_data[name] = parse_train_log(log_path)
 
-    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss_full_model_1e4.png"))
+    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, "accuracy_and_loss_frozen_decoder_1e4.png"))
 
     # --- Plot (b): per-category accuracy, one subplot per category, all runs overlaid ---
     runs_eval_data = {}
@@ -181,7 +179,7 @@ def main():
             continue
         runs_eval_data[name] = parse_evaluate(eval_path)
 
-    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_full_model_1e4.png"))
+    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, "categories_frozen_decoder_1e4.png"))
 
 
 if __name__ == "__main__":
