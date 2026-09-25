@@ -159,7 +159,7 @@ def plot_categories_grid(runs_eval_data, out_path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out_dir", default="VideoQA", help="where to save the PNGs")
+    parser.add_argument("--out_dir", default="VideoQA/Plots/", help="where to save the PNGs")
     args = parser.parse_args()
     os.makedirs(args.out_dir, exist_ok=True)
 
@@ -172,7 +172,7 @@ def main():
             continue
         runs_data[name] = parse_train_log(log_path)
 
-    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, f"accuracy_and_loss_{FILE_NAME}.png"))
+    plot_accuracy_and_loss(runs_data, os.path.join(args.out_dir, f"Accuracies and Loss/accuracy_and_loss_{FILE_NAME}.png"))
 
     # --- Plot (b): per-category accuracy, one subplot per category, all runs overlaid ---
     runs_eval_data = {}
@@ -183,7 +183,7 @@ def main():
             continue
         runs_eval_data[name] = parse_evaluate(eval_path)
 
-    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, f"categories_{FILE_NAME}.png"))
+    #plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, f"Categories/categories_{FILE_NAME}.png"))
 
 
 if __name__ == "__main__":
