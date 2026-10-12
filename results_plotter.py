@@ -26,10 +26,12 @@ import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("linear-1x1x1", r"/share/data/students/andrej3/1x1x1_linear_lora_4_kin400"),
-    ("mlp-1x1x1", r"/share/data/students/andrej3/1x1x1_mlp_lora_4_kin400"),
+    ("linear", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_linear_lora_4_kin400"),
+    ("linear2", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_linear_lora_4_kin400_2"),
+    ("mlp", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_mlp_lora_4_kin400"),
+    ("mlp2", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_mlp_lora_4_kin400_2"),
 ]
-FILE_NAME = "linear_mlp_kin400"
+FILE_NAME = "videomae_linear_mlp_kin400_error_analysis"  # used in the output PNG filenames
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
 CATEGORIES = ["CH", "CW", "TN", "TC", "DL", "DC", "DO", "TP"]
