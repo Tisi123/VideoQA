@@ -21,17 +21,20 @@ Produces two PNGs in --out_dir:
 import os
 import re
 import json
+import math
 import argparse
 import matplotlib.pyplot as plt
 
 # >>> ADAPT: point these at your actual result directories.
 RUNS = [
-    ("linear", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_linear_lora_4_kin400"),
-    ("linear2", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_linear_lora_4_kin400_2"),
-    ("mlp", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_mlp_lora_4_kin400"),
-    ("mlp2", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_videomae_mlp_lora_4_kin400_2"),
+    ("mlp_w10_tclr", r"/share/data/students/andrej3/VideoQA/Results/Uniform_10w/1x1x4_tclr_mlp_lora_4_w10_nextqa"),
+    ("mlp_w20_tclr", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_tclr_mlp_lora_4_w20_nextqa"),
+    ("mlp_w40_tclr", r"/share/data/students/andrej3/VideoQA/Results/Uniform_40w/1x1x4_tclr_mlp_lora_4_w40_nextqa"),
+    ("mlp_w10_mae", r"/share/data/students/andrej3/VideoQA/Results/Uniform_10w/1x1x4_videomae_mlp_lora_4_w10_nextqa"),
+    ("mlp_w20_mae", r"/share/data/students/andrej3/VideoQA/Results/Uniform_20w/1x1x4_mlp_lora_4"),
+    ("mlp_w40_mae", r"/share/data/students/andrej3/VideoQA/Results/Uniform_40w/1x1x4_videomae_mlp_lora_4_w40_nextqa"),
 ]
-FILE_NAME = "videomae_linear_mlp_kin400_error_analysis"  # used in the output PNG filenames
+FILE_NAME = "tclr_mae_mlp_nextqa_w10_20_40"  # used in the output PNG filenames
 
 # NExT-QA question categories, in a fixed order so colors stay consistent across plots.
 CATEGORIES = ["CH", "CW", "TN", "TC", "DL", "DC", "DO", "TP"]
@@ -39,12 +42,15 @@ CATEGORIES = ["CH", "CW", "TN", "TC", "DL", "DC", "DO", "TP"]
 
 def parse_train_log(path):
     """Parses lines like:
-    epoch=0 step=8533 val_loss=0.4888 val_acc=0.4195 num_val=4996
-    Returns a list of dicts, one per epoch, in file order.
+    epoch=-1 step=0 train_loss=NA val_loss=NA val_acc=0.3407 num_val=4996   # pre-training baseline
+    epoch=0 step=8533 train_loss=0.5123 val_loss=0.4888 val_acc=0.4195 num_val=4996
+    The first line (epoch=-1) is the initial accuracy without training.
+    Returns a list of dicts, one per epoch/line, in file order.
+    train_loss/val_loss may be float("nan") when the log reports "NA".
     """
     pattern = re.compile(
-    r"epoch=(\d+)\s+step=(\d+)\s+train_loss=([\d.]+)\s+"
-    r"val_loss=([\d.]+)\s+val_acc=([\d.]+)"
+    r"epoch=(-?\d+)\s+step=(\d+)\s+train_loss=([\d.]+|NA)\s+"
+    r"val_loss=([\d.]+|NA)\s+val_acc=([\d.]+)"
     r"(?:\s+lr=[\d.eE+-]+)?"     # optional, present in these runs
     )
     rows = []
@@ -57,8 +63,8 @@ def parse_train_log(path):
             rows.append({
                 "epoch": int(epoch),
                 "step": int(step),
-                "train_loss": float(train_loss),  
-                "val_loss": float(val_loss),
+                "train_loss": float(train_loss) if train_loss != "NA" else float("nan"),
+                "val_loss": float(val_loss) if val_loss != "NA" else float("nan"),
                 "val_acc": float(val_acc),
             })
     return rows
@@ -83,13 +89,17 @@ def plot_accuracy_and_loss(runs_data, out_path):
     fig, (ax_acc, ax_loss) = plt.subplots(2, 1, figsize=(9, 8), sharex=True)
 
     for name, rows in runs_data.items():
+        # Validation accuracy includes the pre-training baseline (epoch=-1).
         epochs = [r["epoch"] for r in rows]
-        train_loss = [r["train_loss"] for r in rows]
         val_acc = [r["val_acc"] for r in rows]
-        val_loss = [r["val_loss"] for r in rows]
         ax_acc.plot(epochs, val_acc, marker="o", label=name)
-        ax_loss.plot(epochs, val_loss , marker="o", label=name)
-        ax_loss.plot(epochs, train_loss, marker="o", label=f"{name} (train)", linestyle="--")
+
+        # Loss curves skip the pre-training baseline (loss is NaN there).
+        loss_epochs = [r["epoch"] for r in rows if not math.isnan(r["val_loss"])]
+        val_loss = [r["val_loss"] for r in rows if not math.isnan(r["val_loss"])]
+        train_loss = [r["train_loss"] for r in rows if not math.isnan(r["train_loss"])]
+        ax_loss.plot(loss_epochs, val_loss, marker="o", label=name)
+        ax_loss.plot(loss_epochs, train_loss, marker="o", label=f"{name} (train)", linestyle="--")
 
     ax_acc.set_ylabel("Validation accuracy")
     ax_acc.set_title("Validation accuracy vs. epoch")
@@ -182,7 +192,7 @@ def main():
             continue
         runs_eval_data[name] = parse_evaluate(eval_path)
 
-    #plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, f"Categories/categories_{FILE_NAME}.png"))
+    plot_categories_grid(runs_eval_data, os.path.join(args.out_dir, f"Categories/categories_{FILE_NAME}.png"))
 
 
 if __name__ == "__main__":
